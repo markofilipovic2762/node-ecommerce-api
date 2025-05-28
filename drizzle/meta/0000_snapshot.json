@@ -4,34 +4,9 @@
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.__EFMigrationsHistory": {
-      "name": "__EFMigrationsHistory",
-      "schema": "",
-      "columns": {
-        "MigrationId": {
-          "name": "MigrationId",
-          "type": "varchar(150)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "ProductVersion": {
-          "name": "ProductVersion",
-          "type": "varchar(32)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.Employees": {
-      "name": "Employees",
-      "schema": "",
+    "eshop.employees": {
+      "name": "employees",
+      "schema": "eshop",
       "columns": {
         "Id": {
           "name": "Id",
@@ -40,13 +15,13 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "\"Employees_Id_seq\"",
+            "name": "eshop.\"employees_Id_seq\"",
             "increment": "1",
             "minValue": "1",
             "maxValue": "2147483647",
             "startWith": "1",
             "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
           }
         },
         "Name": {
@@ -91,29 +66,18 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Photo": {
-          "name": "Photo",
-          "type": "bytea",
-          "primaryKey": false,
-          "notNull": false
-        },
         "Created": {
           "name": "Created",
-          "type": "timestamp with time zone",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "CreatedBy": {
           "name": "CreatedBy",
           "type": "text",
           "primaryKey": false,
           "notNull": false
-        },
-        "LastModified": {
-          "name": "LastModified",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
         },
         "LastModifiedBy": {
           "name": "LastModifiedBy",
@@ -143,9 +107,9 @@
       "foreignKeys": {
         "FK_Employees_Employees_SuperiorId": {
           "name": "FK_Employees_Employees_SuperiorId",
-          "tableFrom": "Employees",
-          "tableTo": "Employees",
-          "schemaTo": "public",
+          "tableFrom": "employees",
+          "tableTo": "employees",
+          "schemaTo": "eshop",
           "columnsFrom": [
             "SuperiorId"
           ],
@@ -162,9 +126,9 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.Shippers": {
-      "name": "Shippers",
-      "schema": "",
+    "eshop.categories": {
+      "name": "categories",
+      "schema": "eshop",
       "columns": {
         "Id": {
           "name": "Id",
@@ -172,14 +136,14 @@
           "primaryKey": true,
           "notNull": true,
           "identity": {
-            "type": "byDefault",
-            "name": "\"Shippers_Id_seq\"",
+            "type": "always",
+            "name": "eshop.\"categories_Id_seq\"",
             "increment": "1",
-            "minValue": "1",
+            "minValue": "0",
             "maxValue": "2147483647",
             "startWith": "1",
             "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
           }
         },
         "Name": {
@@ -188,17 +152,12 @@
           "primaryKey": false,
           "notNull": true
         },
-        "Phone": {
-          "name": "Phone",
-          "type": "varchar(30)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "Created": {
           "name": "Created",
-          "type": "timestamp with time zone",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "now()"
         },
         "CreatedBy": {
           "name": "CreatedBy",
@@ -210,11 +169,17 @@
           "name": "LastModified",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "LastModifiedBy": {
           "name": "LastModifiedBy",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ImageUrl": {
+          "name": "ImageUrl",
+          "type": "varchar(200)",
           "primaryKey": false,
           "notNull": false
         }
@@ -227,63 +192,9 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.AspNetRoles": {
-      "name": "AspNetRoles",
-      "schema": "",
-      "columns": {
-        "Id": {
-          "name": "Id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "Name": {
-          "name": "Name",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "NormalizedName": {
-          "name": "NormalizedName",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ConcurrencyStamp": {
-          "name": "ConcurrencyStamp",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "RoleNameIndex": {
-          "name": "RoleNameIndex",
-          "columns": [
-            {
-              "expression": "NormalizedName",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.AspNetRoleClaims": {
-      "name": "AspNetRoleClaims",
-      "schema": "",
+    "eshop.orders": {
+      "name": "orders",
+      "schema": "eshop",
       "columns": {
         "Id": {
           "name": "Id",
@@ -292,264 +203,86 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "\"AspNetRoleClaims_Id_seq\"",
+            "name": "eshop.\"orders_Id_seq\"",
             "increment": "1",
             "minValue": "1",
             "maxValue": "2147483647",
             "startWith": "1",
             "cycle": false,
-            "schema": "public"
-          }
-        },
-        "RoleId": {
-          "name": "RoleId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ClaimType": {
-          "name": "ClaimType",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ClaimValue": {
-          "name": "ClaimValue",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "IX_AspNetRoleClaims_RoleId": {
-          "name": "IX_AspNetRoleClaims_RoleId",
-          "columns": [
-            {
-              "expression": "RoleId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "FK_AspNetRoleClaims_AspNetRoles_RoleId": {
-          "name": "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-          "tableFrom": "AspNetRoleClaims",
-          "tableTo": "AspNetRoles",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "RoleId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.AspNetUsers": {
-      "name": "AspNetUsers",
-      "schema": "",
-      "columns": {
-        "Id": {
-          "name": "Id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "FullName": {
-          "name": "FullName",
-          "type": "varchar(70)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "UserName": {
-          "name": "UserName",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "NormalizedUserName": {
-          "name": "NormalizedUserName",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Email": {
-          "name": "Email",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "NormalizedEmail": {
-          "name": "NormalizedEmail",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "EmailConfirmed": {
-          "name": "EmailConfirmed",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "PasswordHash": {
-          "name": "PasswordHash",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "SecurityStamp": {
-          "name": "SecurityStamp",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ConcurrencyStamp": {
-          "name": "ConcurrencyStamp",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "PhoneNumber": {
-          "name": "PhoneNumber",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "PhoneNumberConfirmed": {
-          "name": "PhoneNumberConfirmed",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "TwoFactorEnabled": {
-          "name": "TwoFactorEnabled",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "LockoutEnd": {
-          "name": "LockoutEnd",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "LockoutEnabled": {
-          "name": "LockoutEnabled",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "AccessFailedCount": {
-          "name": "AccessFailedCount",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "EmailIndex": {
-          "name": "EmailIndex",
-          "columns": [
-            {
-              "expression": "NormalizedEmail",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "UserNameIndex": {
-          "name": "UserNameIndex",
-          "columns": [
-            {
-              "expression": "NormalizedUserName",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.AspNetUserClaims": {
-      "name": "AspNetUserClaims",
-      "schema": "",
-      "columns": {
-        "Id": {
-          "name": "Id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "\"AspNetUserClaims_Id_seq\"",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
           }
         },
         "UserId": {
           "name": "UserId",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "ClaimType": {
-          "name": "ClaimType",
-          "type": "text",
+        "EmployeeId": {
+          "name": "EmployeeId",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "ClaimValue": {
-          "name": "ClaimValue",
-          "type": "text",
+        "TotalPrice": {
+          "name": "TotalPrice",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ShippedDate": {
+          "name": "ShippedDate",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ShipperId": {
+          "name": "ShipperId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ShipCity": {
+          "name": "ShipCity",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ShipPostalCode": {
+          "name": "ShipPostalCode",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Created": {
+          "name": "Created",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "LastModified": {
+          "name": "LastModified",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ShipAddress": {
+          "name": "ShipAddress",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {
-        "IX_AspNetUserClaims_UserId": {
-          "name": "IX_AspNetUserClaims_UserId",
+        "IX_Orders_EmployeeId": {
+          "name": "IX_Orders_EmployeeId",
           "columns": [
             {
-              "expression": "UserId",
+              "expression": "EmployeeId",
               "asc": true,
               "nulls": "last",
-              "opclass": "text_ops",
+              "opclass": "int4_ops",
               "isExpression": false
             }
           ],
@@ -557,152 +290,12 @@
           "concurrently": false,
           "method": "btree",
           "with": {}
-        }
-      },
-      "foreignKeys": {
-        "FK_AspNetUserClaims_AspNetUsers_UserId": {
-          "name": "FK_AspNetUserClaims_AspNetUsers_UserId",
-          "tableFrom": "AspNetUserClaims",
-          "tableTo": "AspNetUsers",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "UserId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.Categories": {
-      "name": "Categories",
-      "schema": "",
-      "columns": {
-        "Id": {
-          "name": "Id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "\"Categories_Id_seq\"",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cycle": false,
-            "schema": "public"
-          }
         },
-        "Name": {
-          "name": "Name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Created": {
-          "name": "Created",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "CreatedBy": {
-          "name": "CreatedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "LastModified": {
-          "name": "LastModified",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "LastModifiedBy": {
-          "name": "LastModifiedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.Subcategories": {
-      "name": "Subcategories",
-      "schema": "",
-      "columns": {
-        "Id": {
-          "name": "Id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "\"Subcategories_Id_seq\"",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cycle": false,
-            "schema": "public"
-          }
-        },
-        "Name": {
-          "name": "Name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "CategoryId": {
-          "name": "CategoryId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Created": {
-          "name": "Created",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "CreatedBy": {
-          "name": "CreatedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "LastModified": {
-          "name": "LastModified",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "LastModifiedBy": {
-          "name": "LastModifiedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "IX_Subcategories_CategoryId": {
-          "name": "IX_Subcategories_CategoryId",
+        "IX_Orders_UserId": {
+          "name": "IX_Orders_UserId",
           "columns": [
             {
-              "expression": "CategoryId",
+              "expression": "UserId",
               "asc": true,
               "nulls": "last",
               "opclass": "int4_ops",
@@ -716,18 +309,32 @@
         }
       },
       "foreignKeys": {
-        "FK_Subcategories_Categories_CategoryId": {
-          "name": "FK_Subcategories_Categories_CategoryId",
-          "tableFrom": "Subcategories",
-          "tableTo": "Categories",
-          "schemaTo": "public",
+        "FK_Orders_Users_UserId": {
+          "name": "FK_Orders_Users_UserId",
+          "tableFrom": "orders",
+          "tableTo": "users",
+          "schemaTo": "eshop",
           "columnsFrom": [
-            "CategoryId"
+            "UserId"
           ],
           "columnsTo": [
             "Id"
           ],
           "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "FK_Orders_Employees_EmployeeId": {
+          "name": "FK_Orders_Employees_EmployeeId",
+          "tableFrom": "orders",
+          "tableTo": "employees",
+          "schemaTo": "eshop",
+          "columnsFrom": [
+            "EmployeeId"
+          ],
+          "columnsTo": [
+            "Id"
+          ],
+          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -737,9 +344,9 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.Customers": {
-      "name": "Customers",
-      "schema": "",
+    "eshop.users": {
+      "name": "users",
+      "schema": "eshop",
       "columns": {
         "Id": {
           "name": "Id",
@@ -748,13 +355,13 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "\"Customers_Id_seq\"",
+            "name": "eshop.\"users_Id_seq\"",
             "increment": "1",
             "minValue": "1",
             "maxValue": "2147483647",
             "startWith": "1",
             "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
           }
         },
         "Name": {
@@ -789,25 +396,38 @@
         },
         "Created": {
           "name": "Created",
-          "type": "timestamp with time zone",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
         },
-        "CreatedBy": {
-          "name": "CreatedBy",
-          "type": "text",
+        "Username": {
+          "name": "Username",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
         },
-        "LastModified": {
-          "name": "LastModified",
-          "type": "timestamp with time zone",
+        "Email": {
+          "name": "Email",
+          "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
-        "LastModifiedBy": {
-          "name": "LastModifiedBy",
-          "type": "text",
+        "PasswordHash": {
+          "name": "PasswordHash",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "PasswordSalt": {
+          "name": "PasswordSalt",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         }
@@ -820,9 +440,9 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.Orders": {
-      "name": "Orders",
-      "schema": "",
+    "eshop.subcategories": {
+      "name": "subcategories",
+      "schema": "eshop",
       "columns": {
         "Id": {
           "name": "Id",
@@ -831,80 +451,33 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "\"Orders_Id_seq\"",
+            "name": "eshop.\"subcategories_Id_seq\"",
             "increment": "1",
             "minValue": "1",
             "maxValue": "2147483647",
             "startWith": "1",
             "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
           }
         },
-        "CustomerId": {
-          "name": "CustomerId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "EmployeeId": {
-          "name": "EmployeeId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "TotalPrice": {
-          "name": "TotalPrice",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "OrderDate": {
-          "name": "OrderDate",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ShippedDate": {
-          "name": "ShippedDate",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ShipVia": {
-          "name": "ShipVia",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ShipName": {
-          "name": "ShipName",
+        "Name": {
+          "name": "Name",
           "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
         },
-        "ShipAddress": {
-          "name": "ShipAddress",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ShipCity": {
-          "name": "ShipCity",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ShipPostalCode": {
-          "name": "ShipPostalCode",
+        "CategoryId": {
+          "name": "CategoryId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "Created": {
           "name": "Created",
-          "type": "timestamp with time zone",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
         },
         "CreatedBy": {
           "name": "CreatedBy",
@@ -914,39 +487,30 @@
         },
         "LastModified": {
           "name": "LastModified",
-          "type": "timestamp with time zone",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
         },
         "LastModifiedBy": {
           "name": "LastModifiedBy",
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "ImageUrl": {
+          "name": "ImageUrl",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
-        "IX_Orders_CustomerId": {
-          "name": "IX_Orders_CustomerId",
+        "IX_Subcategories_CategoryId": {
+          "name": "IX_Subcategories_CategoryId",
           "columns": [
             {
-              "expression": "CustomerId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "int4_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "IX_Orders_EmployeeId": {
-          "name": "IX_Orders_EmployeeId",
-          "columns": [
-            {
-              "expression": "EmployeeId",
+              "expression": "CategoryId",
               "asc": true,
               "nulls": "last",
               "opclass": "int4_ops",
@@ -960,32 +524,18 @@
         }
       },
       "foreignKeys": {
-        "FK_Orders_Customers_CustomerId": {
-          "name": "FK_Orders_Customers_CustomerId",
-          "tableFrom": "Orders",
-          "tableTo": "Customers",
-          "schemaTo": "public",
+        "FK_Subcategories_Categories_CategoryId": {
+          "name": "FK_Subcategories_Categories_CategoryId",
+          "tableFrom": "subcategories",
+          "tableTo": "categories",
+          "schemaTo": "eshop",
           "columnsFrom": [
-            "CustomerId"
+            "CategoryId"
           ],
           "columnsTo": [
             "Id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "FK_Orders_Employees_EmployeeId": {
-          "name": "FK_Orders_Employees_EmployeeId",
-          "tableFrom": "Orders",
-          "tableTo": "Employees",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "EmployeeId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
@@ -995,9 +545,9 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.Products": {
-      "name": "Products",
-      "schema": "",
+    "eshop.suppliers": {
+      "name": "suppliers",
+      "schema": "eshop",
       "columns": {
         "Id": {
           "name": "Id",
@@ -1006,13 +556,261 @@
           "notNull": true,
           "identity": {
             "type": "byDefault",
-            "name": "\"Products_Id_seq\"",
+            "name": "eshop.\"suppliers_Id_seq\"",
             "increment": "1",
             "minValue": "1",
             "maxValue": "2147483647",
             "startWith": "1",
             "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
+          }
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Contact": {
+          "name": "Contact",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Address": {
+          "name": "Address",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "City": {
+          "name": "City",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Created": {
+          "name": "Created",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "eshop.orderdetails": {
+      "name": "orderdetails",
+      "schema": "eshop",
+      "columns": {
+        "Id": {
+          "name": "Id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "eshop.\"orderdetails_Id_seq\"",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cycle": false,
+            "schema": "eshop"
+          }
+        },
+        "OrderId": {
+          "name": "OrderId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ProductId": {
+          "name": "ProductId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Price": {
+          "name": "Price",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Quantity": {
+          "name": "Quantity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Created": {
+          "name": "Created",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {
+        "IX_OrderDetails_OrderId": {
+          "name": "IX_OrderDetails_OrderId",
+          "columns": [
+            {
+              "expression": "OrderId",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int4_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "IX_OrderDetails_ProductId": {
+          "name": "IX_OrderDetails_ProductId",
+          "columns": [
+            {
+              "expression": "ProductId",
+              "asc": true,
+              "nulls": "last",
+              "opclass": "int4_ops",
+              "isExpression": false
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "FK_OrderDetails_Orders_OrderId": {
+          "name": "FK_OrderDetails_Orders_OrderId",
+          "tableFrom": "orderdetails",
+          "tableTo": "orders",
+          "schemaTo": "eshop",
+          "columnsFrom": [
+            "OrderId"
+          ],
+          "columnsTo": [
+            "Id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "FK_OrderDetails_Products_ProductId": {
+          "name": "FK_OrderDetails_Products_ProductId",
+          "tableFrom": "orderdetails",
+          "tableTo": "products",
+          "schemaTo": "eshop",
+          "columnsFrom": [
+            "ProductId"
+          ],
+          "columnsTo": [
+            "Id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "eshop.product_images": {
+      "name": "product_images",
+      "schema": "eshop",
+      "columns": {
+        "Id": {
+          "name": "Id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "ProductId": {
+          "name": "ProductId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ImageUrl": {
+          "name": "ImageUrl",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "IsMain": {
+          "name": "IsMain",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "OrderIndex": {
+          "name": "OrderIndex",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Created": {
+          "name": "Created",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "FK_ProductImages_Products_ProductId": {
+          "name": "FK_ProductImages_Products_ProductId",
+          "tableFrom": "product_images",
+          "tableTo": "products",
+          "schemaTo": "eshop",
+          "columnsFrom": [
+            "ProductId"
+          ],
+          "columnsTo": [
+            "Id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false
+    },
+    "eshop.products": {
+      "name": "products",
+      "schema": "eshop",
+      "columns": {
+        "Id": {
+          "name": "Id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "byDefault",
+            "name": "eshop.\"products_Id_seq\"",
+            "increment": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "startWith": "1",
+            "cycle": false,
+            "schema": "eshop"
           }
         },
         "Name": {
@@ -1049,7 +847,8 @@
           "name": "IsDeleted",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": false
         },
         "CategoryId": {
           "name": "CategoryId",
@@ -1069,23 +868,12 @@
           "primaryKey": false,
           "notNull": false
         },
-        "ImageUrl": {
-          "name": "ImageUrl",
-          "type": "varchar(100)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Image": {
-          "name": "Image",
-          "type": "bytea",
-          "primaryKey": false,
-          "notNull": false
-        },
         "Created": {
           "name": "Created",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "now()"
         },
         "CreatedBy": {
           "name": "CreatedBy",
@@ -1097,11 +885,17 @@
           "name": "LastModified",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "LastModifiedBy": {
           "name": "LastModifiedBy",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Discount": {
+          "name": "Discount",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         }
@@ -1159,9 +953,9 @@
       "foreignKeys": {
         "FK_Products_Categories_CategoryId": {
           "name": "FK_Products_Categories_CategoryId",
-          "tableFrom": "Products",
-          "tableTo": "Categories",
-          "schemaTo": "public",
+          "tableFrom": "products",
+          "tableTo": "categories",
+          "schemaTo": "eshop",
           "columnsFrom": [
             "CategoryId"
           ],
@@ -1173,9 +967,9 @@
         },
         "FK_Products_Subcategories_SubcategoryId": {
           "name": "FK_Products_Subcategories_SubcategoryId",
-          "tableFrom": "Products",
-          "tableTo": "Subcategories",
-          "schemaTo": "public",
+          "tableFrom": "products",
+          "tableTo": "subcategories",
+          "schemaTo": "eshop",
           "columnsFrom": [
             "SubcategoryId"
           ],
@@ -1187,9 +981,9 @@
         },
         "FK_Products_Suppliers_SupplierId": {
           "name": "FK_Products_Suppliers_SupplierId",
-          "tableFrom": "Products",
-          "tableTo": "Suppliers",
-          "schemaTo": "public",
+          "tableFrom": "products",
+          "tableTo": "suppliers",
+          "schemaTo": "eshop",
           "columnsFrom": [
             "SupplierId"
           ],
@@ -1206,71 +1000,42 @@
       "policies": {},
       "isRLSEnabled": false
     },
-    "public.Suppliers": {
-      "name": "Suppliers",
-      "schema": "",
+    "eshop.shippers": {
+      "name": "shippers",
+      "schema": "eshop",
       "columns": {
-        "Id": {
-          "name": "Id",
+        "id": {
+          "name": "id",
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
           "identity": {
-            "type": "byDefault",
-            "name": "\"Suppliers_Id_seq\"",
+            "type": "always",
+            "name": "eshop.shippers_id_seq",
             "increment": "1",
             "minValue": "1",
             "maxValue": "2147483647",
             "startWith": "1",
+            "cache": "1",
             "cycle": false,
-            "schema": "public"
+            "schema": "eshop"
           }
         },
-        "Name": {
-          "name": "Name",
-          "type": "varchar(50)",
+        "name": {
+          "name": "name",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
-        "Contact": {
-          "name": "Contact",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Address": {
-          "name": "Address",
+        "email": {
+          "name": "email",
           "type": "varchar(50)",
           "primaryKey": false,
           "notNull": false
         },
-        "City": {
-          "name": "City",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Created": {
-          "name": "Created",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "CreatedBy": {
-          "name": "CreatedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "LastModified": {
-          "name": "LastModified",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "LastModifiedBy": {
-          "name": "LastModifiedBy",
-          "type": "text",
+        "phone": {
+          "name": "phone",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": false
         }
@@ -1282,458 +1047,104 @@
       "checkConstraints": {},
       "policies": {},
       "isRLSEnabled": false
-    },
-    "public.OrderDetails": {
-      "name": "OrderDetails",
-      "schema": "",
-      "columns": {
-        "Id": {
-          "name": "Id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "\"OrderDetails_Id_seq\"",
-            "increment": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "startWith": "1",
-            "cycle": false,
-            "schema": "public"
-          }
-        },
-        "OrderId": {
-          "name": "OrderId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ProductId": {
-          "name": "ProductId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "UnitPrice": {
-          "name": "UnitPrice",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Quantity": {
-          "name": "Quantity",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "TimeOfOrder": {
-          "name": "TimeOfOrder",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Discount": {
-          "name": "Discount",
-          "type": "numeric",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Created": {
-          "name": "Created",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "CreatedBy": {
-          "name": "CreatedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "LastModified": {
-          "name": "LastModified",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "LastModifiedBy": {
-          "name": "LastModifiedBy",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {
-        "IX_OrderDetails_OrderId": {
-          "name": "IX_OrderDetails_OrderId",
-          "columns": [
-            {
-              "expression": "OrderId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "int4_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "IX_OrderDetails_ProductId": {
-          "name": "IX_OrderDetails_ProductId",
-          "columns": [
-            {
-              "expression": "ProductId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "int4_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "FK_OrderDetails_Orders_OrderId": {
-          "name": "FK_OrderDetails_Orders_OrderId",
-          "tableFrom": "OrderDetails",
-          "tableTo": "Orders",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "OrderId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "FK_OrderDetails_Products_ProductId": {
-          "name": "FK_OrderDetails_Products_ProductId",
-          "tableFrom": "OrderDetails",
-          "tableTo": "Products",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "ProductId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.AspNetUserRoles": {
-      "name": "AspNetUserRoles",
-      "schema": "",
-      "columns": {
-        "UserId": {
-          "name": "UserId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "RoleId": {
-          "name": "RoleId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "IX_AspNetUserRoles_RoleId": {
-          "name": "IX_AspNetUserRoles_RoleId",
-          "columns": [
-            {
-              "expression": "RoleId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "FK_AspNetUserRoles_AspNetRoles_RoleId": {
-          "name": "FK_AspNetUserRoles_AspNetRoles_RoleId",
-          "tableFrom": "AspNetUserRoles",
-          "tableTo": "AspNetRoles",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "RoleId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "FK_AspNetUserRoles_AspNetUsers_UserId": {
-          "name": "FK_AspNetUserRoles_AspNetUsers_UserId",
-          "tableFrom": "AspNetUserRoles",
-          "tableTo": "AspNetUsers",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "UserId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "PK_AspNetUserRoles": {
-          "name": "PK_AspNetUserRoles",
-          "columns": [
-            "UserId",
-            "RoleId"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.OrderProduct": {
-      "name": "OrderProduct",
-      "schema": "",
-      "columns": {
-        "OrdersId": {
-          "name": "OrdersId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ProductsId": {
-          "name": "ProductsId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "IX_OrderProduct_ProductsId": {
-          "name": "IX_OrderProduct_ProductsId",
-          "columns": [
-            {
-              "expression": "ProductsId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "int4_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "FK_OrderProduct_Orders_OrdersId": {
-          "name": "FK_OrderProduct_Orders_OrdersId",
-          "tableFrom": "OrderProduct",
-          "tableTo": "Orders",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "OrdersId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "FK_OrderProduct_Products_ProductsId": {
-          "name": "FK_OrderProduct_Products_ProductsId",
-          "tableFrom": "OrderProduct",
-          "tableTo": "Products",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "ProductsId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "PK_OrderProduct": {
-          "name": "PK_OrderProduct",
-          "columns": [
-            "OrdersId",
-            "ProductsId"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.AspNetUserLogins": {
-      "name": "AspNetUserLogins",
-      "schema": "",
-      "columns": {
-        "LoginProvider": {
-          "name": "LoginProvider",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ProviderKey": {
-          "name": "ProviderKey",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "ProviderDisplayName": {
-          "name": "ProviderDisplayName",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "UserId": {
-          "name": "UserId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {
-        "IX_AspNetUserLogins_UserId": {
-          "name": "IX_AspNetUserLogins_UserId",
-          "columns": [
-            {
-              "expression": "UserId",
-              "asc": true,
-              "nulls": "last",
-              "opclass": "text_ops",
-              "isExpression": false
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "FK_AspNetUserLogins_AspNetUsers_UserId": {
-          "name": "FK_AspNetUserLogins_AspNetUsers_UserId",
-          "tableFrom": "AspNetUserLogins",
-          "tableTo": "AspNetUsers",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "UserId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "PK_AspNetUserLogins": {
-          "name": "PK_AspNetUserLogins",
-          "columns": [
-            "LoginProvider",
-            "ProviderKey"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
-    },
-    "public.AspNetUserTokens": {
-      "name": "AspNetUserTokens",
-      "schema": "",
-      "columns": {
-        "UserId": {
-          "name": "UserId",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "LoginProvider": {
-          "name": "LoginProvider",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Name": {
-          "name": "Name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Value": {
-          "name": "Value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "FK_AspNetUserTokens_AspNetUsers_UserId": {
-          "name": "FK_AspNetUserTokens_AspNetUsers_UserId",
-          "tableFrom": "AspNetUserTokens",
-          "tableTo": "AspNetUsers",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "UserId"
-          ],
-          "columnsTo": [
-            "Id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "PK_AspNetUserTokens": {
-          "name": "PK_AspNetUserTokens",
-          "columns": [
-            "UserId",
-            "LoginProvider",
-            "Name"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "checkConstraints": {},
-      "policies": {},
-      "isRLSEnabled": false
     }
   },
   "enums": {},
-  "schemas": {},
-  "sequences": {},
+  "schemas": {
+    "eshop": "eshop"
+  },
+  "sequences": {
+    "eshop.subcategories_Id_seq": {
+      "name": "subcategories_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.employees_Id_seq": {
+      "name": "employees_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.orders_Id_seq": {
+      "name": "orders_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.suppliers_Id_seq": {
+      "name": "suppliers_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.users_Id_seq": {
+      "name": "users_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.products_Id_seq": {
+      "name": "products_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.categories_Id_seq": {
+      "name": "categories_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "0",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.orderdetails_Id_seq": {
+      "name": "orderdetails_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    },
+    "eshop.product_images_Id_seq": {
+      "name": "product_images_Id_seq",
+      "schema": "eshop",
+      "startWith": "1",
+      "minValue": "1",
+      "maxValue": "2147483647",
+      "increment": "1",
+      "cycle": false,
+      "cache": "1"
+    }
+  },
   "roles": {},
   "policies": {},
   "views": {},
