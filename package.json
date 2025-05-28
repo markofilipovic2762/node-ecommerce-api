@@ -13,13 +13,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node --import=tsx --watch --env-file=.env src/index.ts",
     "build": "tsc",
-    "pull": "drizzle-kit pull"
+    "pull": "drizzle-kit introspect"
   },
   "dependencies": {
     "drizzle-orm": "^0.39.3",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "zod": "^3.25.33"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",

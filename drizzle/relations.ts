@@ -1,82 +1,82 @@
 import { relations } from "drizzle-orm/relations";
-import { employeesInEshop, usersInEshop, ordersInEshop, categoriesInEshop, subcategoriesInEshop, orderdetailsInEshop, productsInEshop, productImagesInEshop, suppliersInEshop } from "./schema";
+import { employees, users, orders, categories, subcategories, orderdetails, products, productImages, suppliers } from "./schema";
 
-export const employeesInEshopRelations = relations(employeesInEshop, ({one, many}) => ({
-	employeesInEshop: one(employeesInEshop, {
-		fields: [employeesInEshop.superiorId],
-		references: [employeesInEshop.id],
-		relationName: "employeesInEshop_superiorId_employeesInEshop_id"
+export const employeesRelations = relations(employees, ({one, many}) => ({
+	employees: one(employees, {
+		fields: [employees.superiorId],
+		references: [employees.id],
+		relationName: "employees_superiorId_employees_id"
 	}),
-	employeesInEshops: many(employeesInEshop, {
-		relationName: "employeesInEshop_superiorId_employeesInEshop_id"
+	employeess: many(employees, {
+		relationName: "employees_superiorId_employees_id"
 	}),
-	ordersInEshops: many(ordersInEshop),
+	orderss: many(orders),
 }));
 
-export const ordersInEshopRelations = relations(ordersInEshop, ({one, many}) => ({
-	usersInEshop: one(usersInEshop, {
-		fields: [ordersInEshop.userId],
-		references: [usersInEshop.id]
+export const ordersRelations = relations(orders, ({one, many}) => ({
+	users: one(users, {
+		fields: [orders.userId],
+		references: [users.id]
 	}),
-	employeesInEshop: one(employeesInEshop, {
-		fields: [ordersInEshop.employeeId],
-		references: [employeesInEshop.id]
+	employees: one(employees, {
+		fields: [orders.employeeId],
+		references: [employees.id]
 	}),
-	orderdetailsInEshops: many(orderdetailsInEshop),
+	orderdetailss: many(orderdetails),
 }));
 
-export const usersInEshopRelations = relations(usersInEshop, ({many}) => ({
-	ordersInEshops: many(ordersInEshop),
+export const usersRelations = relations(users, ({many}) => ({
+	orderss: many(orders),
 }));
 
-export const subcategoriesInEshopRelations = relations(subcategoriesInEshop, ({one, many}) => ({
-	categoriesInEshop: one(categoriesInEshop, {
-		fields: [subcategoriesInEshop.categoryId],
-		references: [categoriesInEshop.id]
+export const subcategoriesRelations = relations(subcategories, ({one, many}) => ({
+	categories: one(categories, {
+		fields: [subcategories.categoryId],
+		references: [categories.id]
 	}),
-	productsInEshops: many(productsInEshop),
+	productss: many(products),
 }));
 
-export const categoriesInEshopRelations = relations(categoriesInEshop, ({many}) => ({
-	subcategoriesInEshops: many(subcategoriesInEshop),
-	productsInEshops: many(productsInEshop),
+export const categoriesRelations = relations(categories, ({many}) => ({
+	subcategoriess: many(subcategories),
+	productss: many(products),
 }));
 
-export const orderdetailsInEshopRelations = relations(orderdetailsInEshop, ({one}) => ({
-	ordersInEshop: one(ordersInEshop, {
-		fields: [orderdetailsInEshop.orderId],
-		references: [ordersInEshop.id]
+export const orderdetailsRelations = relations(orderdetails, ({one}) => ({
+	orders: one(orders, {
+		fields: [orderdetails.orderId],
+		references: [orders.id]
 	}),
-	productsInEshop: one(productsInEshop, {
-		fields: [orderdetailsInEshop.productId],
-		references: [productsInEshop.id]
-	}),
-}));
-
-export const productsInEshopRelations = relations(productsInEshop, ({one, many}) => ({
-	orderdetailsInEshops: many(orderdetailsInEshop),
-	productImagesInEshops: many(productImagesInEshop),
-	categoriesInEshop: one(categoriesInEshop, {
-		fields: [productsInEshop.categoryId],
-		references: [categoriesInEshop.id]
-	}),
-	subcategoriesInEshop: one(subcategoriesInEshop, {
-		fields: [productsInEshop.subcategoryId],
-		references: [subcategoriesInEshop.id]
-	}),
-	suppliersInEshop: one(suppliersInEshop, {
-		fields: [productsInEshop.supplierId],
-		references: [suppliersInEshop.id]
+	products: one(products, {
+		fields: [orderdetails.productId],
+		references: [products.id]
 	}),
 }));
 
-export const productImagesInEshopRelations = relations(productImagesInEshop, ({one}) => ({
-	productsInEshop: one(productsInEshop, {
-		fields: [productImagesInEshop.productId],
-		references: [productsInEshop.id]
+export const productsRelations = relations(products, ({one, many}) => ({
+	orderdetailss: many(orderdetails),
+	productImagess: many(productImages),
+	categories: one(categories, {
+		fields: [products.categoryId],
+		references: [categories.id]
+	}),
+	subcategories: one(subcategories, {
+		fields: [products.subcategoryId],
+		references: [subcategories.id]
+	}),
+	suppliers: one(suppliers, {
+		fields: [products.supplierId],
+		references: [suppliers.id]
 	}),
 }));
 
-export const suppliersInEshopRelations = relations(suppliersInEshop, ({many}) => ({
-	productsInEshops: many(productsInEshop),
+export const productImagesRelations = relations(productImages, ({one}) => ({
+	products: one(products, {
+		fields: [productImages.productId],
+		references: [products.id]
+	}),
+}));
+
+export const suppliersRelations = relations(suppliers, ({many}) => ({
+	productss: many(products),
 }));

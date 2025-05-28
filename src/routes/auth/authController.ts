@@ -1,21 +1,21 @@
 import { db } from "@/db";
-import { usersInEshop } from "../../../drizzle/schema";
+import { users } from "../../../drizzle/schema";
 import { Request, Response } from "express"
 import { eq, or } from "drizzle-orm";
 import { createPasswordHash, createToken, verifyPasswordHash } from "@/services/authService";
 
-export async function register(req: Request, res: Response) {
+export const register = async (req: Request, res: Response): Promise<void> => {
     const { name, username, email, password } = req.body;
     const existing = await db
       .select()
-      .from(usersInEshop)
-      .where(or(eq(usersInEshop.username, username), eq(usersInEshop.email, email)));
+      .from(users)
+      .where(or(eq(users.username, username), eq(users.email, email)));
 
-    if (existing.length > 0) return res.status(400).send("User already exists");
+    if (existing.length > 0) res.status(400).send("User already exists");
 
     const { hash, salt } = createPasswordHash(password);
 
-    await db.insert(usersInEshop).values({
+    await db.insert(users).values({
       name,
       username,
       email,
@@ -26,22 +26,22 @@ export async function register(req: Request, res: Response) {
     res.status(200).send("User successfully registered");
 }
 
-export async function login(req: Request, res: Response) {
+export const login = async (req: Request, res: Response) : Promise<void> => {
     const { username, email, password } = req.body;
 
     const [user] = await db
       .select()
-      .from(usersInEshop)
-      .where(or(eq(usersInEshop.username, username), eq(usersInEshop.email, email)));
+      .from(users)
+      .where(or(eq(users.username, username), eq(users.email, email)));
 
-    if (!user) return res.status(404).send("User not found");
+    if (!user) res.status(404).send("User not found");
 
     const valid = verifyPasswordHash(
       password,
       user.passwordHash,
       user.passwordSalt
     );
-    if (!valid) return res.status(400).send("Wrong password");
+    if (!valid) res.status(400).send("Wrong password");
 
     const token = createToken({username: user.username, email: user.email, id: user.id});
 

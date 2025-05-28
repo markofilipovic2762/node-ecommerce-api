@@ -1,3 +1,6 @@
 node_modules
 .env
 dist
+drizzle/*
+drizzle/relations.ts
+drizzle/schema.ts
