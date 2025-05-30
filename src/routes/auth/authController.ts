@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { users } from "../../../drizzle/schema";
+import { usersInEshop } from "../../../drizzle/schema";
 import { Request, Response } from "express"
 import { eq, or } from "drizzle-orm";
 import { createPasswordHash, createToken, verifyPasswordHash } from "@/services/authService";
@@ -8,14 +8,14 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const { name, username, email, password } = req.body;
     const existing = await db
       .select()
-      .from(users)
-      .where(or(eq(users.username, username), eq(users.email, email)));
+      .from(usersInEshop)
+      .where(or(eq(usersInEshop.username, username), eq(usersInEshop.email, email)));
 
     if (existing.length > 0) res.status(400).send("User already exists");
 
     const { hash, salt } = createPasswordHash(password);
 
-    await db.insert(users).values({
+    await db.insert(usersInEshop).values({
       name,
       username,
       email,
@@ -31,8 +31,8 @@ export const login = async (req: Request, res: Response) : Promise<void> => {
 
     const [user] = await db
       .select()
-      .from(users)
-      .where(or(eq(users.username, username), eq(users.email, email)));
+      .from(usersInEshop)
+      .where(or(eq(usersInEshop.username, username), eq(usersInEshop.email, email)));
 
     if (!user) res.status(404).send("User not found");
 
